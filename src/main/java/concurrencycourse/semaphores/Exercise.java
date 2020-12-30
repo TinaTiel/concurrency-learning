@@ -1,4 +1,4 @@
-package semaphores;
+package concurrencycourse.semaphores;
 
 import java.util.ArrayList;
 import java.util.List;

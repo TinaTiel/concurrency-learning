@@ -1,4 +1,4 @@
-package exercise2;
+package concurrencycourse.exercise2;
 
 import java.math.BigInteger;
 

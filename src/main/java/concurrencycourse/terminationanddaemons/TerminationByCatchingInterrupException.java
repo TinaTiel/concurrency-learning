@@ -1,4 +1,4 @@
-package terminationanddaemons;
+package concurrencycourse.terminationanddaemons;
 
 public class TerminationByCatchingInterrupException {
 

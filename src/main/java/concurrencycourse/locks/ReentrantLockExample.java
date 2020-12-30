@@ -1,4 +1,4 @@
-package locks;
+package concurrencycourse.locks;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;

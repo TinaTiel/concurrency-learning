@@ -1,4 +1,4 @@
-package atomicoperations;
+package concurrencycourse.atomicoperations;
 
 import java.util.Random;
 
@@ -34,7 +34,7 @@ public class Deadlocks {
             }
         }
 
-        // We can PREVENT a deadlock by ensuring the locks are taken in the same order as takeRoadA
+        // We can PREVENT a deadlock by ensuring the concurrencycourse.locks are taken in the same order as takeRoadA
         public void takeRoadB() {
             // Acquire a lock on Road B so we can pass through it
 //            synchronized (roadB) { // causes deadlock

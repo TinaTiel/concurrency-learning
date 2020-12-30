@@ -1,4 +1,4 @@
-package joining;
+package concurrencycourse.joining;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class Main {
             // provide a timeout argument (2 seconds in this case) to interrupt the long-running factorial thread after
             // timeout. (BUT bear in mind that, again, it's up to us to make the thread respond to the interrupt otherwise
             // it will happily continue running despite the interrupt signal -- above, we've set it to be a daemon to solve
-            // that problem. Refer to the terminationanddaemons package for the programatic example)
+            // that problem. Refer to the concurrencycourse.terminationanddaemons package for the programatic example)
             try {
                 factorialThread.join(2000);
             } catch (InterruptedException e) {

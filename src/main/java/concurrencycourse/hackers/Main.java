@@ -1,4 +1,4 @@
-package hackers;
+package concurrencycourse.hackers;
 
 import java.util.Random;
 
@@ -30,7 +30,7 @@ public class Main {
         }
 
         public boolean isCorrectPassword(int guess) {
-            // To slow down 'hackers' we delay the response
+            // To slow down 'concurrencycourse.hackers' we delay the response
             try {
                 Thread.sleep(5);
             } catch (InterruptedException ignored) {}
@@ -110,7 +110,7 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-            System.out.println("Nice try hackers, game over");
+            System.out.println("Nice try concurrencycourse.hackers, game over");
             System.exit(0);
         }
 

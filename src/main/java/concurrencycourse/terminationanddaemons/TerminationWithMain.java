@@ -1,4 +1,4 @@
-package terminationanddaemons;
+package concurrencycourse.terminationanddaemons;
 
 import java.math.BigInteger;
 

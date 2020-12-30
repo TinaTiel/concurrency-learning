@@ -1,4 +1,4 @@
-package atomicoperations;
+package concurrencycourse.atomicoperations;
 
 public class RaceConditions {
 

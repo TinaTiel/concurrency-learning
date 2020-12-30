@@ -1,4 +1,4 @@
-package exercise1;
+package concurrencycourse.exercise1;
 
 import java.util.List;
 import java.util.ArrayList;
