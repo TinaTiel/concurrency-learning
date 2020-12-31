@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -34,19 +33,8 @@ public class CommandActionExample {
         // Print out the commands we'll execute, again to keep the results readable/understandable
         System.out.println("Commands to execute: \n" + commands.stream().map(Command::toString).collect(Collectors.joining("\n")) + "\n");
 
-        // Build a Future that tries to execute all commands (supplied as Futures) in an arbitrary order
-        try {
-            CompletableFuture.allOf(commands.stream()
-                    .map((Function<Command, CompletableFuture<Void>>) CompletableFuture::runAsync)
-                    .collect(Collectors.toList())
-                    .toArray(CompletableFuture[]::new)
-            ).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-//        commands.get(0).run(); // sanity check one of the command's actions run as expected
+        ExecutorService executorService = Executors.newFixedThreadPool(20);
+        for(Command command:commands) executorService.submit(command);
 
         // When we execute the results, the actions should be executed in-order within a command at some point in the future
         // (not started all at once), so something like:
@@ -116,73 +104,9 @@ public class CommandActionExample {
             // If there are no actions, then do nothing
             if(actions.isEmpty()) return;
 
-            // Build up a chain of futures.
-            // Looks like we have to build them up in reverse order, so start with the first action...
-            CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(actions.remove(0));
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            for(Action action:actions) executor.submit(action);
 
-            // ...And then reverse the list and build the rest of the chain
-            // (yes we could execute backwards...but it's not common and I/others probably don't like to reason about it)
-            Collections.reverse(actions);
-            for(int i=0; i< actions.size(); i++) {
-                completableFuture.thenRun(actions.get(i));
-            }
-
-            // Execute our chain
-            try {
-                completableFuture.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "Command{" +
-                    "name='" + name + '\'' +
-                    ", actions=" + actions +
-                    '}';
-        }
-    }
-
-    public static class CommandExecutorImpl {
-        private final String name;
-        private final List<Action> actions = new ArrayList<>();
-
-        public Command(String name) {
-            this.name = name;
-        }
-
-        public void addAction(Action action) {
-            action.setCommand(this);
-            actions.add(action);
-        }
-
-        @Override
-        public void run() {
-            // If there are no actions, then do nothing
-            if(actions.isEmpty()) return;
-
-            // Build up a chain of futures.
-            // Looks like we have to build them up in reverse order, so start with the first action...
-            CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(actions.remove(0));
-
-            // ...And then reverse the list and build the rest of the chain
-            // (yes we could execute backwards...but it's not common and I/others probably don't like to reason about it)
-            Collections.reverse(actions);
-            for(int i=0; i< actions.size(); i++) {
-                completableFuture.thenRun(actions.get(i));
-            }
-
-            // Execute our chain
-            try {
-                completableFuture.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override
